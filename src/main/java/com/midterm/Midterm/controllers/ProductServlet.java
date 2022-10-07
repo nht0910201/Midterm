@@ -48,7 +48,7 @@ public class ProductServlet extends HttpServlet {
     }
     private void addProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String product_name = request.getParameter("product_name");
-        Double price = Double.parseDouble(request.getParameter("price"));
+        double price = Double.parseDouble(request.getParameter("price"));
         if(product_name.equals("")){
             request.setAttribute("hasError", true);
             request.setAttribute("errorMessage", "Please enter product name");
@@ -57,20 +57,14 @@ public class ProductServlet extends HttpServlet {
             boolean checkExist = ProductDAO.checkExistByProductName(product_name);
             if(checkExist)
             {
-                request.setAttribute("hasError", true);
-                request.setAttribute("errorMessage", "Product already exist");
-                ServletUtils.forward("/views/product.jsp",request,response);
+                ServletUtils.redirect("/product/manage",request,response);
             }else{
                 Product newProduct = new Product(product_name,price);
                 boolean add = ProductDAO.addProduct(newProduct);
                 if(add){
-//                    List<Product> products = ProductDAO.findAll();
-//                    request.setAttribute("products",products);
                     ServletUtils.redirect("/product/manage",request,response);
                 }else{
-                    request.setAttribute("hasError", true);
-                    request.setAttribute("errorMessage", "Product already exist");
-                    ServletUtils.forward("/views/product.jsp",request,response);
+                    ServletUtils.redirect("/product/manage",request,response);
                 }
             }
         }

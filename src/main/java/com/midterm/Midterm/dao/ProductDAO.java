@@ -32,7 +32,7 @@ public class ProductDAO {
         try (Connection con = DbUtils.getConnection()) {
             con.createQuery(insertSql)
                     .addParameter("name", p.getName())
-                    .addParameter("email", p.getPrice())
+                    .addParameter("price", p.getPrice())
                     .executeUpdate();
             return true;
         }catch (Exception e){
